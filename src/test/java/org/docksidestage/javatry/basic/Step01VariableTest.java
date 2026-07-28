@@ -48,18 +48,49 @@ public class Step01VariableTest extends PlainTestCase {
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
         log(sea); // your answer? => mystic8null:mai
-        // javaでは数字を文字列に足すと自動的に文字列に変換される？
+        // javaでは数字(数値)を文字列に足すと自動的に(数字)文字列に変換される？
+
+        // #1on1: その通り、どのデータ型も文字列と+で連結すると、全部文字列に引きずられる (2026/07/28)
+        // Integerは数字になるし、LocalDateは日付表現文字列になるし。
+        // 内部的には、toString()というメソッドが呼ばれます。
+        // 言葉の使い方: 数値と数字の違い、Integerは数値、その文字は数字 e.g. "123"
+        // #1on1: "null" もプログラミング言語の決め (2026/07/28)
+        // エラーになる言語もあったり、空文字になる言語もあったり(C#)。
+        // 些細なことでも違いがあるからにはメリデメ:
+        //
+        // "null" という文字列になるデメリット:
+        // o データとしてないのに "null" というデータになっちゃう by おかむらさん
+        //   (エラーにならないことに対してのデメリット)
+        //
+        // "null" という文字列になるメリット:
+        // o エラーにならない、処理がそこで終わらない、ある程度動く by おかむらさん
+        //   (それが良いという場面であればメリット)
+        //
+        // こういうことを考えること自体が大事。
+        // A or B を考える習慣。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
-        String sea = "mystic";
-        String land = "oneman";
-        sea = land;
-        land = land + "'s dreams";
+        String sea = "mystic"; // 1インスタンス(mystic) (1丁目1番地)
+        String land = "oneman"; // 2インスタンス(oneman) (2丁目2番地)
+        sea = land; // seaの1丁目1番地を消しゴムで消して、2丁目2番地って書き直した
+        land = land + "'s dreams"; // 3('s dreams), 4(oneman's dreams)
         log(sea); // your answer? => oneman's dreams
         // oneman
         // log(land)だと思い込んでしまった。ちゃんと読みましょう
+        // #1on1: はっはっは (2026/07/28)
+        // いい教訓ですね。
+        // 変数とインスタンスのお話。
+        //
+        // インスタンスとは？
+        // # オブジェクトではないけど...もの？変数とも違うけど...
+        // 一軒家の例。インスタンスフォーカスの大切さ。
+        //
+        // 変数とは？
+        // # 何かしらの値を格納しておくもの
+        // オブジェクト型の場合は、アドレス(参照)が入っている。
+        // 変数とインスタンスは、必ずしも1:1とは限らず、n:1になることもある。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -69,6 +100,9 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         land++;
         log(sea); // your answer? => 415
+        // #1on1: プリミティヴ型の補足 (2026/07/28)
+        // 値そのものが変数に入っていると考えていい。
+        // 言語によっては、intって書いてオブジェクトの場合もある。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -82,6 +116,10 @@ public class Step01VariableTest extends PlainTestCase {
         // 416
         // sea.add(new BigDecimal(1))で値は変わらない？
         // sea.add によって417という計算結果が返されるが、元の値は変更しない
+        // #1on1: BigDecimalのadd()は戻すスタイル (2026/07/28)
+        // add()のコードリーディングしてみた。
+        // #1on1: 構造だけに注目して、今知りたいことを局所的に追って知っていく読み方。 (2026/07/28)
+        // TODO jflute 次回1on1にて、immutableのお話 (2026/07/28)
     }
 
     // ===================================================================================
@@ -121,6 +159,10 @@ public class Step01VariableTest extends PlainTestCase {
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
         log(sea); // your answer? => bigband|1|null|magician
+        // #1on1: 引数変数のおさらい (2026/07/28)
+        // C言語のときの感覚で値は変わらないと思った by おかむらさん
+        // 箱自体が相手にわかることはない、値を受け渡ししている。
+        // 厳密には、アドレスが渡っただけ。
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -177,6 +219,8 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentVariable(sea, land);
         log(sea); // your answer? => harbor
         // helpMethodArgumentVariableで作成したseaは元のseaとは別物？
+        // #1on1: yes (2026/07/28)
+        // seaが二つあって、同じインスタンスを差し示している。n:1の関係になっている。
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
