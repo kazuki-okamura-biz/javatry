@@ -24,7 +24,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author kazuki-okamura-biz
  */
 public class Step01VariableTest extends PlainTestCase {
 
@@ -47,7 +47,8 @@ public class Step01VariableTest extends PlainTestCase {
         String piari = null;
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mystic8null:mai
+        // javaでは数字を文字列に足すと自動的に文字列に変換される？
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -56,7 +57,9 @@ public class Step01VariableTest extends PlainTestCase {
         String land = "oneman";
         sea = land;
         land = land + "'s dreams";
-        log(sea); // your answer? => 
+        log(sea); // your answer? => oneman's dreams
+        // oneman
+        // log(land)だと思い込んでしまった。ちゃんと読みましょう
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -65,7 +68,7 @@ public class Step01VariableTest extends PlainTestCase {
         int land = 415;
         sea = land;
         land++;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 415
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -75,7 +78,10 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         sea = land.add(new BigDecimal(1));
         sea.add(new BigDecimal(1));
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 417
+        // 416
+        // sea.add(new BigDecimal(1))で値は変わらない？
+        // sea.add によって417という計算結果が返されるが、元の値は変更しない
     }
 
     // ===================================================================================
@@ -89,19 +95,23 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => instanceBroadway
+        // null
+        // instanceBroadwayは文字列じゃなくて変数。まだ値はセットされていない
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
+        // null
+        // Integerの初期値はnull?
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -110,7 +120,7 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => bigband|1|null|magician
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -130,7 +140,8 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "harbor";
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
+        // 引数で渡したら値がコピーされるので、もとの値は変わらない
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
@@ -147,7 +158,8 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416
+        // StringBuilderは操作しても新たにクラスが生成されず、元のseaに変更が加わる
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -163,7 +175,8 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
+        // helpMethodArgumentVariableで作成したseaは元のseaとは別物？
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -193,6 +206,13 @@ public class Step01VariableTest extends PlainTestCase {
      */
     public void test_variable_writing() {
         // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        int piari;
+        log(sea + ',' + land + ',' + piari);
+        // test_variable_writingメソッドの外に
+        // private int piari;
+        // を書くとエラーが消える。
     }
 
     // ===================================================================================
@@ -204,11 +224,17 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * 以下で表示される結果はなにか
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_variable_yourExercise() {
         // write your code here
+        BigDecimal sea = new BigDecimal(56);
+        BigDecimal land = new BigDecimal(99);
+        sea = land.add(new BigDecimal(1));
+        sea.add(new BigDecimal(1));
+        land = sea.add(new BigDecimal(1));
+        log(sea + "," + land);
     }
 }
