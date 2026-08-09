@@ -233,6 +233,8 @@ public class Step02IfForTest extends PlainTestCase {
     // TODO jflute 次回1on1にて、forEach()の仕組みを深掘り (2026/08/09)
 
     public void test_iffor_refactor_foreach_to_forEach() {
+        // TODO okamura flagという目的は伝わりますが、具体的に何が入るのか？を変数に示したいところですね by jflute (2026/08/09)
+        // 短いプログラムですが、変数を見るだけでもう少し直感的に理解できるようにしてみましょう。
         StringBuilder flag = new StringBuilder();
         List<String> stageList = prepareStageList();
         StringBuilder sea = new StringBuilder();
