@@ -257,6 +257,8 @@ public class Step01VariableTest extends PlainTestCase {
         // test_variable_writingメソッドの外に
         // private int piari;
         // を書くとエラーが消える。
+        // TODO okamura piariはインスタンス変数で定義するよう要件にあるので、外に書きましょう by jflute (2026/08/09)
+        // (お試しで中に書いたものだと思いますが、コミットされちゃっててぼくの環境でもコンパイルエラーになっています)
     }
 
     // ===================================================================================
@@ -280,5 +282,8 @@ public class Step01VariableTest extends PlainTestCase {
         sea.add(new BigDecimal(1));
         land = sea.add(new BigDecimal(1));
         log(sea + "," + land);
+
+        // TODO okamura [いいね] seaとland両方気にしないといけないので大変だった^^ by jflute (2026/08/09)
+        // (当たってた良かった、ふぅ)
     }
 }

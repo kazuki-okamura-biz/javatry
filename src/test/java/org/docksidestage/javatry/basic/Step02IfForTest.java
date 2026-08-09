@@ -111,6 +111,11 @@ public class Step02IfForTest extends PlainTestCase {
         log(sea); // your answer? => 10
         // sea = sea++ * 2;　について、sea++ * 2;の計算が終わったらseaは905になるが、計算結果が代入されて1808になる？
         // sea++の場合、計算には元のseaの値が使われるのは知ってたけど、どのタイミングでインクリメントされるかが曖昧だった
+        // TODO okamura [ふぉろー] この挙動、めちゃくちゃ直感的じゃないですよね笑 by jflute (2026/08/09)
+        // 演算子の優先順位で、計算と代入よりもインクリメントが後になるので、へんてこりんになります。
+        // 個人的には、こういう挙動もあって、インクリメントするときは単独行でやるのが習慣になっています。
+
+        // TODO jflute 次回1on1にて、漠然読みのお話をする予定 (2026/08/09)
     }
 
     // ===================================================================================
@@ -171,6 +176,10 @@ public class Step02IfForTest extends PlainTestCase {
         String sea = sb.toString();
         log(sea); // your answer? => dockside
         // stageList.forEach(stage -> と for (String stage : stageList) は同じ挙動？
+        // TODO okamura [ふぉろー] 基本的には同じようなループ処理をします。 by jflute (2026/08/09)
+        // 良ければ、forEach()メソッドのソースコードを読んでみてください(^^。
+
+        // TODO jflute 1on1にて、なんにせよ一緒にコード読む (2026/08/09)
     }
 
     // ===================================================================================
@@ -184,12 +193,12 @@ public class Step02IfForTest extends PlainTestCase {
         // write if-for here
         List<String> stageList = prepareStageList();
         List<String> ansList = new ArrayList<>();
-        for (String stage : stageList){
-            if(stage.contains("a")) {
+        for (String stage : stageList) {
+            if (stage.contains("a")) {
                 ansList.add(stage);
             }
         }
-        for (String ans : ansList){
+        for (String ans : ansList) {
             log(ans);
         }
     }
@@ -201,30 +210,34 @@ public class Step02IfForTest extends PlainTestCase {
      * Change foreach statement to List's forEach() (keep result after fix) <br>
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
-//    public void test_iffor_refactor_foreach_to_forEach() {
-//        List<String> stageList = prepareStageList();
-//        String sea = null;
-//        stageList.forEach(stage -> {
-//            if (stage.startsWith("br")) {
-//                return;
-//            }
-//            sea = stage;
-//            if (stage.contains("ga")) {
-//                break;
-//            }
-//        });
-//        log(sea); // should be same as before-fix
-//    }
+    //    public void test_iffor_refactor_foreach_to_forEach() {
+    //        List<String> stageList = prepareStageList();
+    //        String sea = null;
+    //        stageList.forEach(stage -> {
+    //            if (stage.startsWith("br")) {
+    //                return;
+    //            }
+    //            sea = stage;
+    //            if (stage.contains("ga")) {
+    //                break;
+    //            }
+    //        });
+    //        log(sea); // should be same as before-fix
+    //    }
 
     // 何も見ずに書こうとしたらここまでしか出ませんでした...
     // forEach()メソッドの中でseaの代入ができない！breakが使えない！
+    // TODO okamura [いいね] 頑張ってくださりありがとうございます。 by jflute (2026/08/09)
+    // できなかった理由が書いてあってわかりやすい。
+    // seaの代入ができない、breakが使えないのはなぜでしょう？
+    // TODO jflute 次回1on1にて、forEach()の仕組みを深掘り (2026/08/09)
 
     public void test_iffor_refactor_foreach_to_forEach() {
         StringBuilder flag = new StringBuilder();
         List<String> stageList = prepareStageList();
         StringBuilder sea = new StringBuilder();
         stageList.forEach(stage -> {
-            if (flag.length()>0 || stage.startsWith("br")) {
+            if (flag.length() > 0 || stage.startsWith("br")) {
                 return;
             }
             sea.setLength(0);
@@ -240,6 +253,9 @@ public class Step02IfForTest extends PlainTestCase {
     // 変数の代入はできないので、StringBuilderを用いて、空にしてからappend
     // breakに相当するものは無い？
 
+    // TODO okamura 修行++: flag変数を使わずに同じこと実現できます by jflute (2026/08/09)
+    // ちょっとだけ考えてみましょう(^^。
+
     /**
      * Make your original exercise as question style about if-for statement. <br>
      * (if文for文についてあなたのオリジナルの質問形式のエクササイズを作ってみましょう)
@@ -253,17 +269,20 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_yourExercise() {
         // write your code here
         int sea = 0;
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             sea += 7;
-            if(sea % 2 == 0){
+            if (sea % 2 == 0) {
                 continue;
             }
             sea -= 4;
-            if(sea > 10){
+            if (sea > 10) {
                 break;
             }
         }
         log(sea);
+
+        // TODO okamura [いいね] 当たった、ああ良かった by jflute (2026/08/09)
+        // 絶妙に読み飛ばせるところがなくて、しっかり読み切らないといけないエクササイズですね(^^。
     }
 
     // ===================================================================================
