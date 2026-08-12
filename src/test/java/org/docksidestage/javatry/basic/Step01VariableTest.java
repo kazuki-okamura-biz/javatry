@@ -107,11 +107,11 @@ public class Step01VariableTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_BigDecimal() {
-        BigDecimal sea = new BigDecimal(94);
-        BigDecimal land = new BigDecimal(415);
+        BigDecimal sea = new BigDecimal(94); // A
+        BigDecimal land = new BigDecimal(415); // B
         sea = land;
-        sea = land.add(new BigDecimal(1));
-        sea.add(new BigDecimal(1));
+        sea = land.add(new BigDecimal(1)/*C*/); // 415(B) + 1(C) = 416(D)
+        sea.add(new BigDecimal(1)/*E*/);
         log(sea); // your answer? => 417
         // 416
         // sea.add(new BigDecimal(1))で値は変わらない？
@@ -119,7 +119,40 @@ public class Step01VariableTest extends PlainTestCase {
         // #1on1: BigDecimalのadd()は戻すスタイル (2026/07/28)
         // add()のコードリーディングしてみた。
         // #1on1: 構造だけに注目して、今知りたいことを局所的に追って知っていく読み方。 (2026/07/28)
-        // TODO jflute 次回1on1にて、immutableのお話 (2026/07/28)
+        // done jflute 次回1on1にて、immutableのお話 (2026/07/28)
+        // #1on1: immutableとは？ (2026/08/12)
+        // immutable (不変な), mutable (可変な)
+        // o immutableなクラス(インスタンス) // どちらかというとdefault
+        // o immutableな変数
+        //
+        // BigDecimal はimmutableなクラス、
+        // それでnew されたBigDecimalインスタンスは、immutableなインスタンス。
+        //
+        // immutableのメリデメ:
+        // o メリット: $意図しない挙動で値が変わらないように by おかむらさん
+        //            → 安全性
+        // BigDecimalのadd()のように業務的には値が変わっていくのにimmutableを使うメリットは？
+        // $ 出発地点が固定で...そこにメリットがある？ by おかむらさん
+        // 確かに、mutableだと、出発地点のインスタンス(値/状態)がもう残ってないので追従が...
+        //  i (見えない)変化(状態)を追うのは人間にはつらい。(immutableなら管理がしやすい) // これも可読性
+        //  i immutableが情報になって、読み飛ばしとかの可読性につながる。
+        // → まとめると安全性と可読性
+        //
+        // o デメリット:
+        //  i 中間成果物インスタンスがいっぱいできてメモリをくう
+        //  i 少し手間を掛ける
+        //
+        // immutableの歴史:
+        // o 昔はメモリが貧弱だったのでnewをたくさんするのは抵抗があった
+        // o 言語の文法も貧弱だったのでimmutableの実装をする手間がわりと大きかった
+        // o 今やメモリたんまり、言語も進化、デメリットだいぶ薄くなった
+        // o ということで、人間に都合の良いimmutableが推されるようになった
+        //
+        // immutableのバランス:
+        // o 言語や組織や個人の文化(好み)に寄る
+        // o Java: 文法もそこまでimmutable推しじゃないので、8:2くらいな印象
+        //         (jflute自身がそんな感覚。Javaでは無理しない)
+        // o 他の言語だと、immutable全推しの言語もある
     }
 
     // ===================================================================================
@@ -184,6 +217,8 @@ public class Step01VariableTest extends PlainTestCase {
         helpMethodArgumentImmutableMethodcall(sea, land);
         log(sea); // your answer? => harbor
         // 引数で渡したら値がコピーされるので、もとの値は変わらない
+        // #1on1: immutableがわかっていれば、helpメソッドを読まなくても答えが出る。
+        // 高価な絵をガラスケースに入れて同期に見せる話。
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
@@ -283,7 +318,7 @@ public class Step01VariableTest extends PlainTestCase {
         land = sea.add(new BigDecimal(1));
         log(sea + "," + land);
 
-        // TODO okamura [いいね] seaとland両方気にしないといけないので大変だった^^ by jflute (2026/08/09)
+        // done okamura [いいね] seaとland両方気にしないといけないので大変だった^^ by jflute (2026/08/09)
         // (当たってた良かった、ふぅ)
     }
 }

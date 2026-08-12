@@ -111,7 +111,7 @@ public class Step02IfForTest extends PlainTestCase {
         log(sea); // your answer? => 10
         // sea = sea++ * 2;　について、sea++ * 2;の計算が終わったらseaは905になるが、計算結果が代入されて1808になる？
         // sea++の場合、計算には元のseaの値が使われるのは知ってたけど、どのタイミングでインクリメントされるかが曖昧だった
-        // TODO okamura [ふぉろー] この挙動、めちゃくちゃ直感的じゃないですよね笑 by jflute (2026/08/09)
+        // done okamura [ふぉろー] この挙動、めちゃくちゃ直感的じゃないですよね笑 by jflute (2026/08/09)
         // 演算子の優先順位で、計算と代入よりもインクリメントが後になるので、へんてこりんになります。
         // 個人的には、こういう挙動もあって、インクリメントするときは単独行でやるのが習慣になっています。
 
@@ -180,6 +180,19 @@ public class Step02IfForTest extends PlainTestCase {
         // 良ければ、forEach()メソッドのソースコードを読んでみてください(^^。
 
         // TODO jflute 1on1にて、なんにせよ一緒にコード読む (2026/08/09)
+        // #1on1: 読んでみた。たいしたことしてない、for文の代理メソッド。
+        // コールバックとかはstep8。イメージ、メソッドを引数で渡しているような感じ。
+        // そのメソッドがforEach()メソッド内のfor文でぐるぐる実行されている。
+        // そのメソッドからすると、for文で使われるために生まれたのかは知らない。
+        // なので、ただのメソッドなので、for文の文法は使えない。e.g. continue, break
+        // (Javaの文法ではないループ)
+
+        // #1on1: Javaのforが3つ (2026/08/12)
+        // o intあいのfor文          // Javaの最初からあった
+        // o 拡張for文 (普通のfor文)  // 10年後くらいに出てきた
+        // o forEach()メソッド       // 20年後くらいに出てきた
+
+        // TODO jflute 次回1on1にて、forEach()メソッドの存在意義について (2026/08/12)
     }
 
     // ===================================================================================
@@ -230,7 +243,7 @@ public class Step02IfForTest extends PlainTestCase {
     // TODO okamura [いいね] 頑張ってくださりありがとうございます。 by jflute (2026/08/09)
     // できなかった理由が書いてあってわかりやすい。
     // seaの代入ができない、breakが使えないのはなぜでしょう？
-    // TODO jflute 次回1on1にて、forEach()の仕組みを深掘り (2026/08/09)
+    // done jflute 次回1on1にて、forEach()の仕組みを深掘り (2026/08/09)
 
     public void test_iffor_refactor_foreach_to_forEach() {
         // TODO okamura flagという目的は伝わりますが、具体的に何が入るのか？を変数に示したいところですね by jflute (2026/08/09)
@@ -283,7 +296,7 @@ public class Step02IfForTest extends PlainTestCase {
         }
         log(sea);
 
-        // TODO okamura [いいね] 当たった、ああ良かった by jflute (2026/08/09)
+        // done okamura [いいね] 当たった、ああ良かった by jflute (2026/08/09)
         // 絶妙に読み飛ばせるところがなくて、しっかり読み切らないといけないエクササイズですね(^^。
     }
 
