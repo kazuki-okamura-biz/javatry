@@ -49,12 +49,12 @@ public class Step03DataTypeTest extends PlainTestCase {
         land = piari.getYear();
         bonvo = bonvo.plusMonths(1);
         land = bonvo.getMonthValue();
-        land--;
+        land--; // 9?
         if (dstore) {
             BigDecimal addedDecimal = amba.add(new BigDecimal(land));
             sea = String.valueOf(addedDecimal);
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 18.4
     }
 
     // ===================================================================================

@@ -246,19 +246,19 @@ public class Step02IfForTest extends PlainTestCase {
     // done jflute 次回1on1にて、forEach()の仕組みを深掘り (2026/08/09)
 
     public void test_iffor_refactor_foreach_to_forEach() {
-        // TODO okamura flagという目的は伝わりますが、具体的に何が入るのか？を変数に示したいところですね by jflute (2026/08/09)
+        // TODO done okamura flagという目的は伝わりますが、具体的に何が入るのか？を変数に示したいところですね by jflute (2026/08/09)
         // 短いプログラムですが、変数を見るだけでもう少し直感的に理解できるようにしてみましょう。
-        StringBuilder flag = new StringBuilder();
+        StringBuilder containgaWords = new StringBuilder();
         List<String> stageList = prepareStageList();
         StringBuilder sea = new StringBuilder();
         stageList.forEach(stage -> {
-            if (flag.length() > 0 || stage.startsWith("br")) {
+            if (containgaWords.length() > 0 || stage.startsWith("br")) {
                 return;
             }
             sea.setLength(0);
             sea.append(stage);
             if (stage.contains("ga")) {
-                flag.append("ga");
+                containgaWords.append("ga");
             }
         });
         log(sea); // should be same as before-fix
@@ -268,8 +268,26 @@ public class Step02IfForTest extends PlainTestCase {
     // 変数の代入はできないので、StringBuilderを用いて、空にしてからappend
     // breakに相当するものは無い？
 
-    // TODO okamura 修行++: flag変数を使わずに同じこと実現できます by jflute (2026/08/09)
+    // TODO done okamura 修行++: flag変数を使わずに同じこと実現できます by jflute (2026/08/09)
     // ちょっとだけ考えてみましょう(^^。
+
+    /**
+     * flagを使わずにtest_iffor_refactor_foreach_to_forEach()を実装
+     * @author okamura
+     */
+    public void test_iffor_refactor_foreach_to_forEach_without_flag() {
+        List<String> stageList = prepareStageList();
+        StringBuilder sea = new StringBuilder();
+        stageList.forEach(stage -> {
+            if (sea.indexOf("ga")>=0 || stage.startsWith("br")) {
+                return;
+            }
+            sea.setLength(0);
+            sea.append(stage);
+        });
+        log(sea); // should be same as before-fix
+    }
+    // seaに"ga"が含まれていたらそれ以上は更新しない方針
 
     /**
      * Make your original exercise as question style about if-for statement. <br>

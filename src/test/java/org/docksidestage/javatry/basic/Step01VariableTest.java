@@ -283,16 +283,17 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+    private int piari;
+
     public void test_variable_writing() {
         // define variables here
         String sea = "mystic";
         Integer land = null;
-        int piari;
         log(sea + ',' + land + ',' + piari);
         // test_variable_writingメソッドの外に
         // private int piari;
         // を書くとエラーが消える。
-        // TODO okamura piariはインスタンス変数で定義するよう要件にあるので、外に書きましょう by jflute (2026/08/09)
+        // TODO done okamura piariはインスタンス変数で定義するよう要件にあるので、外に書きましょう by jflute (2026/08/09)
         // (お試しで中に書いたものだと思いますが、コミットされちゃっててぼくの環境でもコンパイルエラーになっています)
     }
 
