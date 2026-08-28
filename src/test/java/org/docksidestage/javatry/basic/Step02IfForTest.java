@@ -86,7 +86,7 @@ public class Step02IfForTest extends PlainTestCase {
             }
             log(sea);
             if (!land) {
-                land = true;
+                land = true; // ここを通ればseaは10
             } else if (sea <= 903) {
                 sea++;
             }
@@ -115,7 +115,32 @@ public class Step02IfForTest extends PlainTestCase {
         // 演算子の優先順位で、計算と代入よりもインクリメントが後になるので、へんてこりんになります。
         // 個人的には、こういう挙動もあって、インクリメントするときは単独行でやるのが習慣になっています。
 
-        // TODO jflute 次回1on1にて、漠然読みのお話をする予定 (2026/08/09)
+        // done jflute 次回1on1にて、漠然読みのお話をする予定 (2026/08/09)
+        // #1on1: コードリーディングのコツ (裏ルートの探し方) (2026/08/28)
+        //
+        // (まずスクロールして...)
+        // o 漠然読みで構造把握
+        //  → 変数宣言、大中小のif文、ログの5つのパート
+        //
+        // (逆さ読みで当たりを探したり...構造把握していれば当たりが見つけやすい)
+        // o 当たりを付けて、フォーカス読み
+        //
+        // 読まなくて良いところは、極力読まない方が当然速い。
+        // 読まなくて良いところを探しながら読む。最初から裏ルートを探すつもりで読む。
+        //
+        // もちろんギャンブルに負けることはある。でも損はない。
+        // 構造把握して頭の中に地図があるので網羅読みも安定するし、
+        // ある程度踏み込んでることで０から読むよりは速い。
+        //
+        // あとは次の当たりが見つかることも多い。そしてまたフォーカス読み。
+        // 3,4回繰り返しても、網羅読みよりは速い可能性。
+        //
+        // よもやま話: 仮説思考的なコードリーディング。
+        //
+        // TODO okajima [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/28)
+        // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
+        //
+        // 他の業界のノウハウを抽象化してリンクさせてヒントにする。
     }
 
     // ===================================================================================
@@ -176,10 +201,10 @@ public class Step02IfForTest extends PlainTestCase {
         String sea = sb.toString();
         log(sea); // your answer? => dockside
         // stageList.forEach(stage -> と for (String stage : stageList) は同じ挙動？
-        // TODO okamura [ふぉろー] 基本的には同じようなループ処理をします。 by jflute (2026/08/09)
+        // done okamura [ふぉろー] 基本的には同じようなループ処理をします。 by jflute (2026/08/09)
         // 良ければ、forEach()メソッドのソースコードを読んでみてください(^^。
 
-        // TODO jflute 1on1にて、なんにせよ一緒にコード読む (2026/08/09)
+        // done jflute 1on1にて、なんにせよ一緒にコード読む (2026/08/09)
         // #1on1: 読んでみた。たいしたことしてない、for文の代理メソッド。
         // コールバックとかはstep8。イメージ、メソッドを引数で渡しているような感じ。
         // そのメソッドがforEach()メソッド内のfor文でぐるぐる実行されている。
@@ -192,7 +217,30 @@ public class Step02IfForTest extends PlainTestCase {
         // o 拡張for文 (普通のfor文)  // 10年後くらいに出てきた
         // o forEach()メソッド       // 20年後くらいに出てきた
 
-        // TODO jflute 次回1on1にて、forEach()メソッドの存在意義について (2026/08/12)
+        // done jflute 次回1on1にて、forEach()メソッドの存在意義について (2026/08/12)
+        // #1on1: 存在意義 (2026/08/28)
+        // $エクササイズとしては、なんでこんな制限多いんだよぅ...
+        // $でも制限が多いからこそ読み手にとっては読みやすいのかな？
+        // $不自由さが読み手の可読性につながるのかな？
+        // immutable/mutableの話とリンクさせることができる。
+        // 制限から得られるものがあるのは同じ。情報になる。
+        //
+        // だから、シンプルでストレートなループのときはforEach()が向く。
+        // なんかしらあれこれいじりたいときは拡張for文が利く。
+        // webサービスとかは、ストレートなループが多い。
+        // 昔よりもwebサービスの業界自体が大きくなってきた。
+        //
+        // javatryのエクササイズはひどい。向いてないことをさせようとしている。
+        //
+        // よもやま話: ↑は要は適材適所 (2026/08/28)
+        // 適材適所すぎるのもぼくらはつらい。
+        // 使い分けの判断コストの積み上がり。これが地味にくる。
+        // このジレンマと永遠に戦っていく。
+        // なので、常に基本的にはバランスを取っている。
+        //
+        // 適材適所のメリットよりも、統一性のメリットを重視する考え方もある。
+        //
+        // 使いやすい/使いにくいは相対的なもの。
     }
 
     // ===================================================================================
@@ -240,13 +288,13 @@ public class Step02IfForTest extends PlainTestCase {
 
     // 何も見ずに書こうとしたらここまでしか出ませんでした...
     // forEach()メソッドの中でseaの代入ができない！breakが使えない！
-    // TODO okamura [いいね] 頑張ってくださりありがとうございます。 by jflute (2026/08/09)
+    // done okamura [いいね] 頑張ってくださりありがとうございます。 by jflute (2026/08/09)
     // できなかった理由が書いてあってわかりやすい。
     // seaの代入ができない、breakが使えないのはなぜでしょう？
     // done jflute 次回1on1にて、forEach()の仕組みを深掘り (2026/08/09)
 
     public void test_iffor_refactor_foreach_to_forEach() {
-        // TODO done okamura flagという目的は伝わりますが、具体的に何が入るのか？を変数に示したいところですね by jflute (2026/08/09)
+        // done okamura flagという目的は伝わりますが、具体的に何が入るのか？を変数に示したいところですね by jflute (2026/08/09)
         // 短いプログラムですが、変数を見るだけでもう少し直感的に理解できるようにしてみましょう。
         StringBuilder containgaWords = new StringBuilder();
         List<String> stageList = prepareStageList();
@@ -268,7 +316,7 @@ public class Step02IfForTest extends PlainTestCase {
     // 変数の代入はできないので、StringBuilderを用いて、空にしてからappend
     // breakに相当するものは無い？
 
-    // TODO done okamura 修行++: flag変数を使わずに同じこと実現できます by jflute (2026/08/09)
+    // done okamura 修行++: flag変数を使わずに同じこと実現できます by jflute (2026/08/09)
     // ちょっとだけ考えてみましょう(^^。
 
     /**
@@ -279,7 +327,7 @@ public class Step02IfForTest extends PlainTestCase {
         List<String> stageList = prepareStageList();
         StringBuilder sea = new StringBuilder();
         stageList.forEach(stage -> {
-            if (sea.indexOf("ga")>=0 || stage.startsWith("br")) {
+            if (sea.indexOf("ga") >= 0 || stage.startsWith("br")) {
                 return;
             }
             sea.setLength(0);

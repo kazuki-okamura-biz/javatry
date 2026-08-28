@@ -293,7 +293,7 @@ public class Step01VariableTest extends PlainTestCase {
         // test_variable_writingメソッドの外に
         // private int piari;
         // を書くとエラーが消える。
-        // TODO done okamura piariはインスタンス変数で定義するよう要件にあるので、外に書きましょう by jflute (2026/08/09)
+        // done okamura piariはインスタンス変数で定義するよう要件にあるので、外に書きましょう by jflute (2026/08/09)
         // (お試しで中に書いたものだと思いますが、コミットされちゃっててぼくの環境でもコンパイルエラーになっています)
     }
 
