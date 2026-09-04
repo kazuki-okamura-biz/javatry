@@ -35,7 +35,7 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_call_basic() {
         String sea = supplySomething();
-        log(sea); // your answer? =>
+        log(sea); // your answer? => over
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -43,7 +43,7 @@ public class Step04MethodTest extends PlainTestCase {
         String sea = functionSomething("mystic");
         consumeSomething(supplySomething());
         runnableSomething();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mysmys
     }
 
     private String functionSomething(String name) {
@@ -76,7 +76,9 @@ public class Step04MethodTest extends PlainTestCase {
         if (!land) {
             sea = sea + mutable.getStageName().length();
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 910
+        // メソッドに変数（sea, land）をそのまま渡しても元の値は変わらない。
+        // オブジェクトを渡して中でsetterを呼ぶと値は変わる
     }
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
@@ -115,9 +117,10 @@ public class Step04MethodTest extends PlainTestCase {
         }
         ++sea;
         sea = inParkCount;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 100
     }
 
+    // このhasAnnualPassportは外側のとは別物（スコープが違う）
     private void offAnnualPassport(boolean hasAnnualPassport) {
         hasAnnualPassport = false;
     }
@@ -160,4 +163,25 @@ public class Step04MethodTest extends PlainTestCase {
     }
 
     // write methods here
+    private boolean availableLogging = true;
+
+    private String replaceAwithB(String str) {
+        return str.replaceAll("A", "B");
+    }
+
+    private String replaceCwithB(String str) {
+        return str.replaceAll("C", "B");
+    }
+
+    private String quote(String str, String quoteSign) {
+        return quoteSign + str + quoteSign;
+    }
+
+    private boolean isAvailableLogging() {
+        return availableLogging;
+    }
+
+    private void showSea(String sea) {
+        log(sea);
+    }
 }

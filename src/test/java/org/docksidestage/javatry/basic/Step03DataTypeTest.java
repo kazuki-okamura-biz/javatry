@@ -82,7 +82,11 @@ public class Step03DataTypeTest extends PlainTestCase {
         if ((int) dstore > piari) {
             sea = 0;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
+        // (int) dstore でdstoreは1に丸め込まれる？
+        // byte型？ => -128~127の整数値
+        // 2.3d, 2.3Dとかはdouble型であることを明示しているだけ？大文字・小文字は区別しない。
+        // land = (short) bonvo;のような変換ではbonvoの下位16ビット（shortのビット数）が切り取られる
     }
 
     // ===================================================================================
@@ -92,7 +96,7 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_object() {
         St3ImmutableStage stage = new St3ImmutableStage("hangar");
         String sea = stage.getStageName();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar
     }
 
     private static class St3ImmutableStage {
