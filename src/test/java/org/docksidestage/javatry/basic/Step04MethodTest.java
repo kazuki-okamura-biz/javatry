@@ -155,16 +155,39 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_making() {
         // use after making these methods
-        //String replaced = replaceCwithB(replaceAwithB("ABC"));
-        //String sea = quote(replaced, "'");
-        //if (isAvailableLogging()) {
-        //    showSea(sea);
-        //}
+        String replaced = replaceCwithB(replaceAwithB("ABC"));
+        String sea = quote(replaced, "'");
+        if (isAvailableLogging()) {
+            showSea(sea);
+        }
     }
 
     // write methods here
     private boolean availableLogging = true;
 
+    // #1on1: いいね、メソッドの定義位置が、呼び出し順序で一致してて直感的で把握しやすい (2026/09/11)
+    // $自然と、出てきた順で書くかも、その方が見つけやすいと思う
+    // jfluteも↑そう思う。一方で、個人差もあるでしょう。
+    // (ちょっと余談: 輪郭のお話。輪郭すぎるjfluteさんおかしい話)
+    // // アーキテクトのちから
+    // https://jflute.hatenadiary.jp/entry/20150113/architect
+    //
+    // バラバラだとただの羅列で、頭の中に入りにくいという印象。
+    // 何かしらのルールで並んでて欲しい。
+    // アルファベット順もあるけど...流れを表現するものの方が嬉しい。
+    //
+    // LastaFlute の ActionRequestProcessor を見て参考にしてみた。
+    //
+    // よもやま: 最初は綺麗だった話。
+    // land()をどこに追加するか？圧倒的に多いのは一番下。
+    // おじゃまします感。人の作ったクラスでアウェー感。
+    // 割れ窓理論のお話。
+    // このパターンは、組織の問題。(烏合の衆)
+    // 
+    // 既存クラスのコード体裁デザインに着目して尊重して、既存クラスを修正して欲しい。
+    // 既存クラスへの責任感を持って欲しい。既存クラスのコード体裁デザインへの責任。
+    //
+    // つまり、遠慮することはない。
     private String replaceAwithB(String str) {
         return str.replaceAll("A", "B");
     }
@@ -173,6 +196,7 @@ public class Step04MethodTest extends PlainTestCase {
         return str.replaceAll("C", "B");
     }
 
+    // #1on1: いいね、第二引数の変数名がわかりやすい (2026/09/11)
     private String quote(String str, String quoteSign) {
         return quoteSign + str + quoteSign;
     }

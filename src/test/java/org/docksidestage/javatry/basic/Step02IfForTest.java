@@ -137,7 +137,7 @@ public class Step02IfForTest extends PlainTestCase {
         //
         // よもやま話: 仮説思考的なコードリーディング。
         //
-        // TODO okajima [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/28)
+        // done okajima [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/28)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
         //
         // 他の業界のノウハウを抽象化してリンクさせてヒントにする。

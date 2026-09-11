@@ -99,6 +99,8 @@ public class Step03DataTypeTest extends PlainTestCase {
         log(sea); // your answer? => hangar
     }
 
+    // #1on1: immutableクラスの原始的な作り方 (2026/09/11)
+    // finalは必須ではない。安全性と可読性のためにfinalは付けておきたい。
     private static class St3ImmutableStage {
 
         private final String stageName;
