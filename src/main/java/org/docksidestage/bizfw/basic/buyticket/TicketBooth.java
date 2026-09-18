@@ -25,11 +25,13 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
     private int quantity = MAX_QUANTITY;
+    private int twoDayPassportQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
 
     // ===================================================================================
@@ -56,17 +58,27 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public void buyOneDayPassport(Integer handedMoney) {
+        buyPassport(handedMoney, quantity, ONE_DAY_PRICE);
+        --quantity;
+    }
+
+    public int buyTwoDayPassport(Integer handedMoney) {
+        buyPassport(handedMoney, twoDayPassportQuantity, TWO_DAY_PRICE);
+        --twoDayPassportQuantity;
+        return handedMoney - TWO_DAY_PRICE;
+    }
+
+    private void buyPassport(Integer handedMoney, int quantity, int price) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        --quantity;
-        if (handedMoney < ONE_DAY_PRICE) {
+        if (handedMoney < price) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
-        if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + handedMoney;
-        } else { // first purchase
-            salesProceeds = handedMoney;
+        if (salesProceeds != null) {
+            salesProceeds = salesProceeds + price;
+        } else {
+            salesProceeds = price;
         }
     }
 
@@ -94,6 +106,8 @@ public class TicketBooth {
     public int getQuantity() {
         return quantity;
     }
+
+    public int getTwoDayPassportQuantity() { return twoDayPassportQuantity; }
 
     public Integer getSalesProceeds() {
         return salesProceeds;
