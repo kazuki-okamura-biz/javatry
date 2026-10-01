@@ -72,9 +72,11 @@ public class Step05ClassTest extends PlainTestCase {
         int handedMoney = 7399;
         try {
             // TicketShortMoneyExceptionがthrowされる。オブジェクトがthrowされている？
+            // #1on1: まさしくそうです。step7で例外をやるので深掘りはそのとき。 (2026/10/01)
             booth.buyOneDayPassport(handedMoney);
             fail("always exception but none");
         } catch (TicketShortMoneyException continued) { // continuedには何が入るのか。String msg だからStringのエラー文？
+            // #1on1: throw new XxxException(...) のインスタンスが continued に入る。
             log("Failed to buy one-day passport: money=" + handedMoney, continued);
         }
         return booth.getQuantity();
@@ -102,6 +104,12 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = booth.getSalesProceeds();
         log(sea); // should be same as one-day price, visual check here
     }
+
+    // #1on1: 二つのバグの特徴 (2026/10/01)
+    // o 互いの一行一行自体は合ってるけど、その関係性が間違ってる、順序(流れ)が間違ってる
+    //  → 意外にやっかいのバグで、見つけにくいので要注意
+    //
+    // o その一行自体が業務的に間違ってる、ということが見ればわかりやすい
 
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
