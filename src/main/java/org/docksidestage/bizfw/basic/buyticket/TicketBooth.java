@@ -15,9 +15,10 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
-// TODO okamura author追加お願いします by jflute (2026/10/01)
+// done okamura author追加お願いします by jflute (2026/10/01)
 /**
  * @author jflute
+ * @kazuki-okamura-biz
  */
 public class TicketBooth {
 
@@ -35,13 +36,13 @@ public class TicketBooth {
     // $別物なら分けた方がいいかな？
     // 統一の場合は、白紙の紙があって、oneDay, twoDayその場で書くイメージ。
     // 分ける場合は、最初からoneDay, twoDayが10毎ずつあるイメージ。
-    // TODO okamura 既存の "quantity" をどうするか？ by jflute (2026/10/01)
+    // done okamura 既存の "quantity" をどうするか？ by jflute (2026/10/01)
     // 省略されたquantityをデフォルトのシンプルなoneDayと捉えることもできるかもだけど...
     // totalニュアンスで勘違いする人もいそう。
     // なので、無難にするのであれば、oneDayPassportQuantity ってした方が良いかなと。
     // もう、新しい仕様が追加されたので、クラス全体のバランスが変わったわけなので、
     // 既存の変数名も遠慮なく直して良い。
-    private int quantity = MAX_QUANTITY;
+    private int oneDyaPassportQuantity = MAX_QUANTITY;
     private int twoDayPassportQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
 
@@ -68,23 +69,35 @@ public class TicketBooth {
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
-    public void buyOneDayPassport(Integer handedMoney) {
-        // TODO okamura 修行++: quantity 2回登場するのどうにかしたい by jflute (2026/10/01)
-        buyPassport(handedMoney, quantity, ONE_DAY_PRICE);
-        --quantity;
+    public Ticket buyOneDayPassport(Integer handedMoney) {
+        // done okamura 修行++: quantity 2回登場するのどうにかしたい by jflute (2026/10/01)
+        oneDyaPassportQuantity = doBuyPassport(handedMoney, oneDyaPassportQuantity, ONE_DAY_PRICE);
+        return new Ticket(ONE_DAY_PRICE);
     }
 
-    // TODO okamura JavaDocコメントも入れておいてください (日本語の方で良い) by jflute (2026/10/01)
-    public int buyTwoDayPassport(Integer handedMoney) {
-        buyPassport(handedMoney, twoDayPassportQuantity, TWO_DAY_PRICE);
-        --twoDayPassportQuantity;
-        return handedMoney - TWO_DAY_PRICE;
+    // done okamura JavaDocコメントも入れておいてください (日本語の方で良い) by jflute (2026/10/01)
+    /**
+     * Buy two-day passport, method for park guest.
+     * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @throws TicketSoldOutException When ticket in booth is sold out.
+     * @throws TicketShortMoneyException When the specified money is short for purchase.
+     */
+    public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
+        twoDayPassportQuantity = doBuyPassport(handedMoney, twoDayPassportQuantity, TWO_DAY_PRICE);
+        return new TicketBuyResult(new Ticket(TWO_DAY_PRICE), handedMoney - TWO_DAY_PRICE);
     }
 
-    // TODO okamura publicなbuyとprivateなbuyを区分けするテクニックがある by jflute (2026/10/01)
+    // done? okamura publicなbuyとprivateなbuyを区分けするテクニックがある by jflute (2026/10/01)
     // (補完のときや会話の時に紛れるのを避けるために)
     // e.g. doBuyPassport → 実処理しますよ感
-    private void buyPassport(Integer handedMoney, int quantity, int price) {
+    /**
+     * 代金と購入したいチケット、在庫を受け取って購入処理を行う
+     * @param handedMoney 渡された金額
+     * @param quantity 在庫数
+     * @param price 金額
+     * @return 購入後の在庫数を返す
+     */
+    private int doBuyPassport(Integer handedMoney, Integer quantity, int price) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
@@ -96,6 +109,7 @@ public class TicketBooth {
         } else {
             salesProceeds = price;
         }
+        return --quantity;
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -124,7 +138,7 @@ public class TicketBooth {
     // B. 変える
     // C. 古いメソッドを非推奨にして、新しいメソッドを追加
     //
-    // TODO okamura ここ(javatry)では、数が少ないので変えちゃって良いかなと by jflute (2026/10/01)
+    // done okamura ここ(javatry)では、数が少ないので変えちゃって良いかなと by jflute (2026/10/01)
     // ただ変えるという時に気をつけること。
     // ニュアンスが変わってしまうのでそこに注意。
     //
@@ -134,8 +148,8 @@ public class TicketBooth {
     // そこが曖昧になっていた可能性も考えられる。(呼び出し側がどういうつもりで呼んでたのか？)
     // 以前は、そこが曖昧でも辻褄が合ってた。OneDayしかないから。
     //
-    public int getQuantity() {
-        return quantity;
+    public int getOneDayPassportQuantity() {
+        return oneDyaPassportQuantity;
     }
 
     public int getTwoDayPassportQuantity() {
