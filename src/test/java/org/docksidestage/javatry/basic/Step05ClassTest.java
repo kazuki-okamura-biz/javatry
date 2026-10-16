@@ -16,9 +16,9 @@
 package org.docksidestage.javatry.basic;
 
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
-import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
+import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -156,7 +156,9 @@ public class Step05ClassTest extends PlainTestCase {
         oneDayPassport.doInPark();
         log(oneDayPassport.isAlreadyIn()); // should be true
         // should be ... は合致したが、コメントの要件がよくわからないです...
+        // #1on1: m(_ _)m。doInPark()したら、isAlreadyIn状態になるということ (2026/10/16)
         // OneDayPassportを買ってもチケットをもらえませんでした ← buyOneDayPassportによって買えているのでは？
+        // #1on1: m(_ _)m。戻り値で受け取れてなかったと言う話です。 (2026/10/16)
     }
 
     /**
@@ -172,6 +174,7 @@ public class Step05ClassTest extends PlainTestCase {
         int change = buyResult.getChange();
         log(twoDayPassport.getDisplayPrice() + change); // should be same as money
     }
+    // TODO jflute 次回ふぉろーここから (2026/10/16)
 
     /**
      * Now you can use only one in spite of two-day passport, so fix Ticket to be able to handle plural days. <br>

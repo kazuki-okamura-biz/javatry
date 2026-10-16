@@ -42,6 +42,7 @@ public class TicketBooth {
     // なので、無難にするのであれば、oneDayPassportQuantity ってした方が良いかなと。
     // もう、新しい仕様が追加されたので、クラス全体のバランスが変わったわけなので、
     // 既存の変数名も遠慮なく直して良い。
+    // TODO okamura ダイヤになってる by jflute (2026/10/16)
     private int oneDyaPassportQuantity = MAX_QUANTITY;
     private int twoDayPassportQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
@@ -63,6 +64,8 @@ public class TicketBooth {
     // * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
+    // TODO okamura JavaDoc, 戻り値の説明をぜひ @return by jflute (2026/10/16)
+    // メソッドインターフェースが変わったらJavaDocも修正。
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -71,11 +74,17 @@ public class TicketBooth {
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
         // done okamura 修行++: quantity 2回登場するのどうにかしたい by jflute (2026/10/01)
+        // $こんなんでいいのかな？と思いつつも
+        // でも一行になってる、近いところにきたから、以前は良い。(行が分かれると片方違うバグが発生しやすい)
+        // TODO okamura 修行#: 再び、quantityが2回登場するのどうにかしたい by jflute (2026/10/16)
+        // $本当は実装したいことがあった。渡した変数自体を減らすみたいな...immutable/mutableもあるので...
+        // いい発想。immutable/mutableのためらいはあるかもだけど、その発想やってみたら。
         oneDyaPassportQuantity = doBuyPassport(handedMoney, oneDyaPassportQuantity, ONE_DAY_PRICE);
         return new Ticket(ONE_DAY_PRICE);
     }
 
     // done okamura JavaDocコメントも入れておいてください (日本語の方で良い) by jflute (2026/10/01)
+    // TODO okamura JavaDoc, 戻り値の説明をぜひ by jflute (2026/10/16)
     /**
      * Buy two-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -90,6 +99,8 @@ public class TicketBooth {
     // done? okamura publicなbuyとprivateなbuyを区分けするテクニックがある by jflute (2026/10/01)
     // (補完のときや会話の時に紛れるのを避けるために)
     // e.g. doBuyPassport → 実処理しますよ感
+    // TODO okamura priceの "金額" は、料金の方がいいかな by jflute (2026/10/16)
+    // (ぼくらは言葉にこだわる)
     /**
      * 代金と購入したいチケット、在庫を受け取って購入処理を行う
      * @param handedMoney 渡された金額
@@ -129,6 +140,25 @@ public class TicketBooth {
             super(msg);
         }
     }
+
+    // #1on1: $日本語が一番難しい「priceの "金額" は、料金の方がいいかな」でふと思った (2026/10/16)
+    // $コメント書く時とか意識していることは？
+    // 何か書く時の絶対的に意識、「読み手になるシミュレーションをすること」
+    // 読み手のことを考えて書くとは？
+    // 難しいこと。なんで難しいかも難しい。
+    // o 読み手が色々で持ってる知識が違うので、想像が難しい
+    // o そもそも想像するという行為自体が難しい
+    // 難しいことを知ることが大事、そんな簡単にわからない。
+    // だからこそ、考えようとする。安易に結論づけない。
+    // 些細なことに時間を使っちゃってもったいない意識も芽生えてしまうが...
+    // 難しいことだから考えて当然って思えれば、遠慮なく考えるようになる。
+    //
+    // 考え続けないと上手にはならない。考え続けるためのコツがこれ↑
+    //
+    // 事業会社だと、良い意味でフランクに会話ができる環境なので、ハッピーだけど鍛えられないこともある。
+    // コードのコメントは、顔の見えない、知らない人と会話しているに等しい。
+    // 仕事環境自体は良いので、ただ得られないことがあることを知って、何かしら別のことで得ること大事。
+    // つまみぐいでも成長するための工夫はできる。(月1のテニススクールの例を)
 
     // ===================================================================================
     //                                                                            Accessor
