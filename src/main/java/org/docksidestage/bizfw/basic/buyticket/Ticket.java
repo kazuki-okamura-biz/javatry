@@ -24,23 +24,39 @@ public class Ticket {
     //                                                                           Attribute
     //                                                                           =========
     private final int displayPrice; // written on ticket, park guest can watch this
-    private boolean alreadyIn; // true means this ticket is unavailable
+    private int availableCount; // true means this ticket is unavailable
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice) {
-        this.displayPrice = displayPrice;
+    public Ticket(int displayPrice, int availableCount) {
+        this.displayPrice   = displayPrice;
+        this.availableCount = availableCount;
     }
 
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
+    // doInParkの想定仕様が不明...
+    // twoDayだったら2回使い切ったらIn Park判定？
     public void doInPark() {
-        if (alreadyIn) {
+        if (availableCount == 0) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
-        alreadyIn = true;
+        --availableCount;
+    }
+
+    // ===================================================================================
+    //                                                                       Night In Park
+    //                                                                       =============
+    public void doNightInPark(boolean isNight) {
+        if (!isNight) {
+            throw new IllegalStateException("The Night Ticket is only available at night");
+        }
+        if (availableCount == 0) {
+            throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
+        }
+        --availableCount;
     }
 
     // ===================================================================================
@@ -51,6 +67,6 @@ public class Ticket {
     }
 
     public boolean isAlreadyIn() {
-        return alreadyIn;
+        return availableCount==0;
     }
 }

@@ -182,6 +182,13 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_usePluralDays() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(20000);
+        log(buyResult.getTicket().isAlreadyIn()); //should be false;
+        buyResult.getTicket().doInPark();
+        log(buyResult.getTicket().isAlreadyIn()); //should be false;
+        buyResult.getTicket().doInPark();
+        log(buyResult.getTicket().isAlreadyIn()); //should be true;
     }
 
     /**
@@ -190,22 +197,23 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_whetherTicketType() {
         // uncomment when you implement this exercise
-        //TicketBooth booth = new TicketBooth();
-        //Ticket oneDayPassport = booth.buyOneDayPassport(10000);
-        //showTicketIfNeeds(oneDayPassport);
-        //TicketBuyResult buyResult = booth.buyTwoDayPassport(10000);
-        //Ticket twoDayPassport = buyResult.getTicket();
-        //showTicketIfNeeds(twoDayPassport);
+        TicketBooth booth = new TicketBooth();
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        showTicketIfNeeds(oneDayPassport);
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(20000); // もともと10000だったけど、買えずにエラーになったので20000に変更
+        Ticket twoDayPassport = buyResult.getTicket();
+        showTicketIfNeeds(twoDayPassport);
     }
 
     // uncomment when you implement this exercise
-    //private void showTicketIfNeeds(Ticket ticket) {
-    //    if (xxxxxxxxxxxxxxxxxx) { // write determination for two-day passport
-    //        log("two-day passport");
-    //    } else {
-    //        log("other");
-    //    }
-    //}
+    private void showTicketIfNeeds(Ticket ticket) {
+        // マジックナンバー気になる...
+        if (ticket.getDisplayPrice() == 13200) { // write determination for two-day passport
+            log("two-day passport");
+        } else {
+            log("other");
+        }
+    }
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -216,6 +224,15 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_wonder_four() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult buyResult = booth.buyFourDayPassport(30000);
+        log(buyResult.getTicket().isAlreadyIn()); //should be false;
+        buyResult.getTicket().doInPark();
+        buyResult.getTicket().doInPark();
+        buyResult.getTicket().doInPark();
+        log(buyResult.getTicket().isAlreadyIn()); //should be false;
+        buyResult.getTicket().doInPark();
+        log(buyResult.getTicket().isAlreadyIn()); //should be true;
     }
 
     /**
@@ -224,6 +241,14 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_wonder_night() {
         // your confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult buyResult = booth.buyNightOnlyTwoDayPassport(10000);
+        log(buyResult.getTicket().isAlreadyIn()); //should be false;
+        buyResult.getTicket().doNightInPark(true);
+        log(buyResult.getTicket().isAlreadyIn()); //should be false;
+        buyResult.getTicket().doNightInPark(true);
+        log(buyResult.getTicket().isAlreadyIn()); //should be true;
+//        buyResult.getTicket().doNightInPark(false);
     }
 
     // ===================================================================================

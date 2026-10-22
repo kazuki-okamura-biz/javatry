@@ -28,6 +28,11 @@ public class TicketBooth {
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
+    private static final int FOUR_DAY_PRICE = 22400;
+    private static final int NIGHT_ONLY_TWO_DAY_PRICE = 7400;
+    private static final int ONE_DAY_AVAILABLE = 1;
+    private static final int TWO_DAY_AVAILABLE = 2;
+    private static final int FOUR_DAY_AVAILABLE = 4;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -42,9 +47,11 @@ public class TicketBooth {
     // なので、無難にするのであれば、oneDayPassportQuantity ってした方が良いかなと。
     // もう、新しい仕様が追加されたので、クラス全体のバランスが変わったわけなので、
     // 既存の変数名も遠慮なく直して良い。
-    // TODO okamura ダイヤになってる by jflute (2026/10/16)
-    private int oneDyaPassportQuantity = MAX_QUANTITY;
+    // done okamura ダイヤになってる by jflute (2026/10/16)
+    private int oneDayPassportQuantity = MAX_QUANTITY;
     private int twoDayPassportQuantity = MAX_QUANTITY;
+    private int fourDayPassportQuantity = MAX_QUANTITY;
+    private int nightOnlyTwoDayPassportQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
 
     // ===================================================================================
@@ -64,13 +71,14 @@ public class TicketBooth {
     // * @throws TicketSoldOutException ブース内のチケットが売り切れだったら
     // * @throws TicketShortMoneyException 買うのに金額が足りなかったら
     // */
-    // TODO okamura JavaDoc, 戻り値の説明をぜひ @return by jflute (2026/10/16)
+    // done okamura JavaDoc, 戻り値の説明をぜひ @return by jflute (2026/10/16)
     // メソッドインターフェースが変わったらJavaDocも修正。
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
+     * @return チケットクラスを返す
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
         // done okamura 修行++: quantity 2回登場するのどうにかしたい by jflute (2026/10/01)
@@ -79,33 +87,44 @@ public class TicketBooth {
         // TODO okamura 修行#: 再び、quantityが2回登場するのどうにかしたい by jflute (2026/10/16)
         // $本当は実装したいことがあった。渡した変数自体を減らすみたいな...immutable/mutableもあるので...
         // いい発想。immutable/mutableのためらいはあるかもだけど、その発想やってみたら。
-        oneDyaPassportQuantity = doBuyPassport(handedMoney, oneDyaPassportQuantity, ONE_DAY_PRICE);
-        return new Ticket(ONE_DAY_PRICE);
+        oneDayPassportQuantity = doBuyPassport(handedMoney, oneDayPassportQuantity, ONE_DAY_PRICE);
+        return new Ticket(ONE_DAY_PRICE, ONE_DAY_AVAILABLE);
     }
 
     // done okamura JavaDocコメントも入れておいてください (日本語の方で良い) by jflute (2026/10/01)
-    // TODO okamura JavaDoc, 戻り値の説明をぜひ by jflute (2026/10/16)
+    // done okamura JavaDoc, 戻り値の説明をぜひ by jflute (2026/10/16)
     /**
      * Buy two-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
+     * @return TicketBuyResult クラス（チケット購入結果）を返す
      */
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
         twoDayPassportQuantity = doBuyPassport(handedMoney, twoDayPassportQuantity, TWO_DAY_PRICE);
-        return new TicketBuyResult(new Ticket(TWO_DAY_PRICE), handedMoney - TWO_DAY_PRICE);
+        return new TicketBuyResult(new Ticket(TWO_DAY_PRICE, TWO_DAY_AVAILABLE), handedMoney - TWO_DAY_PRICE);
+    }
+
+    public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
+        fourDayPassportQuantity = doBuyPassport(handedMoney, fourDayPassportQuantity, FOUR_DAY_PRICE);
+        return new TicketBuyResult(new Ticket(FOUR_DAY_PRICE, FOUR_DAY_AVAILABLE), handedMoney - FOUR_DAY_PRICE);
+    }
+
+    public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
+        nightOnlyTwoDayPassportQuantity = doBuyPassport(handedMoney, nightOnlyTwoDayPassportQuantity, NIGHT_ONLY_TWO_DAY_PRICE);
+        return new TicketBuyResult(new Ticket(NIGHT_ONLY_TWO_DAY_PRICE, TWO_DAY_AVAILABLE), handedMoney - NIGHT_ONLY_TWO_DAY_PRICE);
     }
 
     // done? okamura publicなbuyとprivateなbuyを区分けするテクニックがある by jflute (2026/10/01)
     // (補完のときや会話の時に紛れるのを避けるために)
     // e.g. doBuyPassport → 実処理しますよ感
-    // TODO okamura priceの "金額" は、料金の方がいいかな by jflute (2026/10/16)
+    // done okamura priceの "金額" は、料金の方がいいかな by jflute (2026/10/16)
     // (ぼくらは言葉にこだわる)
     /**
      * 代金と購入したいチケット、在庫を受け取って購入処理を行う
      * @param handedMoney 渡された金額
      * @param quantity 在庫数
-     * @param price 金額
+     * @param price 料金
      * @return 購入後の在庫数を返す
      */
     private int doBuyPassport(Integer handedMoney, Integer quantity, int price) {
@@ -179,7 +198,7 @@ public class TicketBooth {
     // 以前は、そこが曖昧でも辻褄が合ってた。OneDayしかないから。
     //
     public int getOneDayPassportQuantity() {
-        return oneDyaPassportQuantity;
+        return oneDayPassportQuantity;
     }
 
     public int getTwoDayPassportQuantity() {
