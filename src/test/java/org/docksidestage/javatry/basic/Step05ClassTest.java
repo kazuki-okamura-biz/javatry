@@ -174,7 +174,7 @@ public class Step05ClassTest extends PlainTestCase {
         int change = buyResult.getChange();
         log(twoDayPassport.getDisplayPrice() + change); // should be same as money
     }
-    // TODO jflute 次回ふぉろーここから (2026/10/16)
+    // done jflute 次回ふぉろーここから (2026/10/16)
 
     /**
      * Now you can use only one in spite of two-day passport, so fix Ticket to be able to handle plural days. <br>
@@ -191,6 +191,7 @@ public class Step05ClassTest extends PlainTestCase {
         log(buyResult.getTicket().isAlreadyIn()); //should be true;
     }
 
+    // TODO jflute 次回1on1ここから (2026/10/29)
     /**
      * Accurately determine whether type of bought ticket is two-day passport or not by if-statement. (fix Ticket classes if needed) <br>
      * (買ったチケットの種別がTwoDayPassportなのかどうかをif文で正確に判定してみましょう。(必要ならTicketクラスたちを修正))
@@ -248,7 +249,7 @@ public class Step05ClassTest extends PlainTestCase {
         log(buyResult.getTicket().isAlreadyIn()); //should be false;
         buyResult.getTicket().doNightInPark(true);
         log(buyResult.getTicket().isAlreadyIn()); //should be true;
-//        buyResult.getTicket().doNightInPark(false);
+        //        buyResult.getTicket().doNightInPark(false);
     }
 
     // ===================================================================================

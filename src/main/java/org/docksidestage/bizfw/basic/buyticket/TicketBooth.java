@@ -93,6 +93,19 @@ public class TicketBooth {
 
     // done okamura JavaDocコメントも入れておいてください (日本語の方で良い) by jflute (2026/10/01)
     // done okamura JavaDoc, 戻り値の説明をぜひ by jflute (2026/10/16)
+    // TODO okamura @return, クラス名を書かなくてOK、チケット購入結果が重要 by jflute (2026/10/29)
+    // プログラムに書いてあることは書かなくて良い。
+    // @param は識別のために変数名を書いている。一方で、型はやはり書いていない。
+    //
+    // 具体例を入れるテクニック。(直感性が増す、概念理解が早くなる)
+    // @return チケット購入結果 e.g. チケット本体、お釣り
+    // @return チケット購入結果: チケット本体、お釣りなど
+    // @return result of ticket purchase, having チケット本体、お釣りなど
+    // ここでのポイント、"e.g.", "など" でボカしておくことが大事。
+    // 断定列挙をしてしまうと、将来項目が追加された時に、逆に誤解を産んでしまう。
+    // @return チケット購入結果: チケット本体、お釣り
+    // ここでは「概念理解の補助」をしたいだけであって、
+    // チケット「購入結果の網羅」をしてもらいたいわけじゃない。
     /**
      * Buy two-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
