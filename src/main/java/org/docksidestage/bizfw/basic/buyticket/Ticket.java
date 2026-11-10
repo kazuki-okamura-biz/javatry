@@ -23,9 +23,9 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    // TODO okamura availableCountに変わったのに、trueの説明が書いてある by jflute (2026/10/29)
+    // TODO done okamura availableCountに変わったのに、trueの説明が書いてある by jflute (2026/10/29)
     private final int displayPrice; // written on ticket, park guest can watch this
-    private int availableCount; // true means this ticket is unavailable
+    private int availableCount; // チケットの残り使用可能回数。0になると使用不可
 
     // ===================================================================================
     //                                                                         Constructor

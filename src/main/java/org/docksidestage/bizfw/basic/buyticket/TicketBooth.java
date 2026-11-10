@@ -48,10 +48,10 @@ public class TicketBooth {
     // もう、新しい仕様が追加されたので、クラス全体のバランスが変わったわけなので、
     // 既存の変数名も遠慮なく直して良い。
     // done okamura ダイヤになってる by jflute (2026/10/16)
-    private int oneDayPassportQuantity = MAX_QUANTITY;
-    private int twoDayPassportQuantity = MAX_QUANTITY;
-    private int fourDayPassportQuantity = MAX_QUANTITY;
-    private int nightOnlyTwoDayPassportQuantity = MAX_QUANTITY;
+    private final PassportQuantity oneDayPassportQuantity = new PassportQuantity();
+    private final PassportQuantity twoDayPassportQuantity = new PassportQuantity();
+    private final PassportQuantity fourDayPassportQuantity = new PassportQuantity();
+    private final PassportQuantity nightOnlyTwoDayPassportQuantity = new PassportQuantity();
     private Integer salesProceeds; // null allowed: until first purchase
 
     // ===================================================================================
@@ -84,16 +84,16 @@ public class TicketBooth {
         // done okamura 修行++: quantity 2回登場するのどうにかしたい by jflute (2026/10/01)
         // $こんなんでいいのかな？と思いつつも
         // でも一行になってる、近いところにきたから、以前は良い。(行が分かれると片方違うバグが発生しやすい)
-        // TODO okamura 修行#: 再び、quantityが2回登場するのどうにかしたい by jflute (2026/10/16)
+        // TODO done okamura 修行#: 再び、quantityが2回登場するのどうにかしたい by jflute (2026/10/16)
         // $本当は実装したいことがあった。渡した変数自体を減らすみたいな...immutable/mutableもあるので...
         // いい発想。immutable/mutableのためらいはあるかもだけど、その発想やってみたら。
-        oneDayPassportQuantity = doBuyPassport(handedMoney, oneDayPassportQuantity, ONE_DAY_PRICE);
+        doBuyPassport(handedMoney, oneDayPassportQuantity, ONE_DAY_PRICE);
         return new Ticket(ONE_DAY_PRICE, ONE_DAY_AVAILABLE);
     }
 
     // done okamura JavaDocコメントも入れておいてください (日本語の方で良い) by jflute (2026/10/01)
     // done okamura JavaDoc, 戻り値の説明をぜひ by jflute (2026/10/16)
-    // TODO okamura @return, クラス名を書かなくてOK、チケット購入結果が重要 by jflute (2026/10/29)
+    // TODO done okamura @return, クラス名を書かなくてOK、チケット購入結果が重要 by jflute (2026/10/29)
     // プログラムに書いてあることは書かなくて良い。
     // @param は識別のために変数名を書いている。一方で、型はやはり書いていない。
     //
@@ -111,20 +111,24 @@ public class TicketBooth {
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
-     * @return TicketBuyResult クラス（チケット購入結果）を返す
+     * @return チケット購入結果を返す
      */
+    // リファクタリングでTwoDay, FourDay, ... の処理まとめられないかな？
+    // doBuyPassportでまとめてるからこのままでも良い？
+    // でも5, 6, 7... day と増えた場合にメソッドが無限に増加してしまう...
+    // 何かしらで共通化する（利用する側に購入の日数を指定してもらう？）なら、今度はdoBuyPassportで共通化したメリットが薄くなる...？
     public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
-        twoDayPassportQuantity = doBuyPassport(handedMoney, twoDayPassportQuantity, TWO_DAY_PRICE);
+        doBuyPassport(handedMoney, twoDayPassportQuantity, TWO_DAY_PRICE);
         return new TicketBuyResult(new Ticket(TWO_DAY_PRICE, TWO_DAY_AVAILABLE), handedMoney - TWO_DAY_PRICE);
     }
 
     public TicketBuyResult buyFourDayPassport(Integer handedMoney) {
-        fourDayPassportQuantity = doBuyPassport(handedMoney, fourDayPassportQuantity, FOUR_DAY_PRICE);
+        doBuyPassport(handedMoney, fourDayPassportQuantity, FOUR_DAY_PRICE);
         return new TicketBuyResult(new Ticket(FOUR_DAY_PRICE, FOUR_DAY_AVAILABLE), handedMoney - FOUR_DAY_PRICE);
     }
 
     public TicketBuyResult buyNightOnlyTwoDayPassport(Integer handedMoney) {
-        nightOnlyTwoDayPassportQuantity = doBuyPassport(handedMoney, nightOnlyTwoDayPassportQuantity, NIGHT_ONLY_TWO_DAY_PRICE);
+        doBuyPassport(handedMoney, nightOnlyTwoDayPassportQuantity, NIGHT_ONLY_TWO_DAY_PRICE);
         return new TicketBuyResult(new Ticket(NIGHT_ONLY_TWO_DAY_PRICE, TWO_DAY_AVAILABLE), handedMoney - NIGHT_ONLY_TWO_DAY_PRICE);
     }
 
@@ -138,10 +142,9 @@ public class TicketBooth {
      * @param handedMoney 渡された金額
      * @param quantity 在庫数
      * @param price 料金
-     * @return 購入後の在庫数を返す
      */
-    private int doBuyPassport(Integer handedMoney, Integer quantity, int price) {
-        if (quantity <= 0) {
+    private void doBuyPassport(Integer handedMoney, PassportQuantity quantity, int price) {
+        if (quantity.getQuantity() <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
         if (handedMoney < price) {
@@ -152,7 +155,21 @@ public class TicketBooth {
         } else {
             salesProceeds = price;
         }
-        return --quantity;
+        quantity.buyPassport();
+    }
+
+    /**
+     * パスポートの在庫数だけを管理クラス
+     * 購入されたら在庫数を減らす
+     */
+    private static class PassportQuantity {
+        private int quantity = MAX_QUANTITY;
+
+        //メソッド名に違和感...
+        //decreaseだと"買う"という業務的意味が含まれない。そもそも"買う"というニュアンスはいらない？
+        public void buyPassport () { --quantity; }
+
+        public int getQuantity () { return quantity; }
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -211,11 +228,11 @@ public class TicketBooth {
     // 以前は、そこが曖昧でも辻褄が合ってた。OneDayしかないから。
     //
     public int getOneDayPassportQuantity() {
-        return oneDayPassportQuantity;
+        return oneDayPassportQuantity.getQuantity();
     }
 
     public int getTwoDayPassportQuantity() {
-        return twoDayPassportQuantity;
+        return twoDayPassportQuantity.getQuantity();
     }
 
     public Integer getSalesProceeds() {
